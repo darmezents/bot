@@ -69,3 +69,15 @@ s7 = s6[:1]
 s7 = s7.upper()
 s8 = s7 + s6[1:]
 print(s8)
+
+
+# форматирование строк
+
+n = 105
+s7_0 = 'str 1'
+s7_1 = 'str 2'
+s7 = f'Lorem ipsum: {s7_0}. {s7_1}. {8+8}, {str(n)}'
+print(s7)
+
+s7_2 = 'Lorem ipsum: {}. {}'.format(s7_0, s7_1)
+print(s7_2)
