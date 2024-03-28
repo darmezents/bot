@@ -7,6 +7,8 @@ Basic example for a bot that uses inline keyboards. For an in-depth explanation,
  https://github.com/python-telegram-bot/python-telegram-bot/wiki/InlineKeyboard-Example.
 """
 import logging
+import random
+import os
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
@@ -29,12 +31,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             InlineKeyboardButton("Dogs", callback_data="2"),
         ],
         [InlineKeyboardButton("Random", callback_data="3")],
+        [InlineKeyboardButton("Придумать кличку", callback_data="4")],
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text("Please choose:", reply_markup=reply_markup)
-
 
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Parses the CallbackQuery and updates the message text."""
@@ -47,17 +49,33 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     folder = ''
 
     if query.data == '1':
-        folder = 'cats'
+        folder = 'images/cats'
     elif query.data == '2':
-        folder == 'dogs'
+        folder = 'images/dogs'
     else:
-        folder == 'cats'
+        d = []
+        img = 'images'
+        for files in os.scandir(img):
+            d.append(files.name)
+        randfolder = random.choice(d)
+        folder = f'images/{randfolder}'
+    
+    
+    c = []
+    for files in os.scandir(folder):
+        c.append(files.name)
+    image_name = random.choice(c)
 
-    img_path = f'images/{folder}/1.png'
+    image_path = f'{folder}/{image_name}'
+
+    await query.message.reply_photo(
+        photo=open(image_path, 'rb')
+    )
+
+
 
     await query.edit_message_text(text=f"Selected option: {query.data}")
     
-    # await update.message.send_photo('images/cats/1.jpg')
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
