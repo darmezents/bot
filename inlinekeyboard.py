@@ -52,10 +52,26 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     folder = ''
     txt = ''
 
+    def randomname(txt):
+        t = []
+        for i in txt:
+            t.append(i)
+        name = random.choice(t)
+        return name
+    
+    
     if query.data == '1':
         folder = 'images/cats'
+        txt2 = open('cats.txt', 'r')
+        await query.message.reply_text(
+            text=f'Name: {randomname(txt2)}'
+        )
     elif query.data == '2':
-        folder = 'images/dogs'   
+        folder = 'images/dogs' 
+        txt3 = open('dogs.txt', 'r')
+        await query.message.reply_text(
+            text=f'Name: {randomname(txt3)}'
+        )  
     elif query.data == '3':
         d = []
         img = 'images'
@@ -67,13 +83,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         txt = open('cats.txt', 'r')
     elif query.data == '5':
         txt = open('dogs.txt', 'r')
-    
-    def randomname(txt):
-        t = []
-        for i in txt:
-            t.append(i)
-        name = random.choice(t)
-        return name
+
 
     if folder == '':
         await query.message.reply_text(
@@ -92,16 +102,6 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             photo=open(image_path, 'rb')
         )
 
-        if query.data == '1':
-            txt2 = open('cats.txt', 'r')
-            await query.message.reply_text(
-            text=f'Name: {randomname(txt2)}'
-        )
-        elif query.data == '2':
-            txt3 = open('dogs.txt', 'r')
-            await query.message.reply_text(
-            text=f'Name: {randomname(txt3)}'
-        )
 
     await query.edit_message_text(text=f"Selected option: {query.data}")
     
